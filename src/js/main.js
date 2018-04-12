@@ -24,11 +24,43 @@ window.addEventListener('resize', function() {
 function createObject(object, color, posx, posy, posz) {
     var geo = new THREE.EdgesGeometry( object );
     var mat = new THREE.LineBasicMaterial( { color: color } );
-    var wireframe = new THREE.LineSegments( geo, mat );
-    wireframe.position.y=posy;
-    wireframe.position.x=posx;
-    wireframe.position.z=posz;
-    scene.add( wireframe );    
+    var obj = new THREE.LineSegments( geo, mat );
+    obj.position.y=posy;
+    obj.position.x=posx;
+    obj.position.z=posz;
+    scene.add( obj );    
+}
+
+function side() {
+    scene = new THREE.Scene();
+
+    var house = new THREE.CubeGeometry(2, 2.5, 2);
+    var material = new THREE.MeshBasicMaterial( {color: 0x45ffee} );
+    var cube = new THREE.Mesh(house, material);
+    //scene.add(cube);
+    createObject(house, 0x000000, 0, 0, 0);
+
+    var wGeometry = new THREE.CylinderGeometry(1.25, 1.5, 1.5, 4);
+    material = new THREE.MeshBasicMaterial( {color: 0x5a0a4e} );
+    var cylinder = new THREE.Mesh(wGeometry, material);
+    cylinder.position.y = 2;
+    //scene.add(cylinder);
+
+    createObject(wGeometry, 0x000000, 0, 0, 0);
+    
+    var pos = 142,
+        camera = new THREE.OrthographicCamera(width / - pos, width / pos, height / pos, height / - pos, .1, 1000 );
+    camera.position.z = 5;
+    camera.position.x = -10;
+    camera.position.y = -90*Math.PI/180;
+
+    scene.add(cube, cylinder, camera);
+
+    renderer.clear();
+    renderer.setClearColor(0xffefe0);
+    renderer.render(scene, camera); 
+    //render(scene, camera);
+
 }
 
 function front() {
@@ -60,38 +92,6 @@ function front() {
     renderer.clear();
     renderer.setClearColor(0xffefe0);
     renderer.render(scene, camera);
-    //render(scene, camera);
-
-}
-
-function side() {
-    scene = new THREE.Scene();
-
-    var house = new THREE.CubeGeometry(2, 2.5, 2);
-    var material = new THREE.MeshBasicMaterial( {color: 0x45ffee} );
-    var cube = new THREE.Mesh(house, material);
-    //scene.add(cube);
-    createObject(house, 0x000000, 0, 0, 0);
-
-    var wGeometry = new THREE.CylinderGeometry(1.25, 1.5, 1.5, 4);
-    material = new THREE.MeshBasicMaterial( {color: 0x5a0a4e} );
-    var cylinder = new THREE.Mesh(wGeometry, material);
-    cylinder.position.y = 2;
-    //scene.add(cylinder);
-
-    createObject(wGeometry, 0x000000, 0, 0, 0);
-    
-    var pos = 142,
-        camera = new THREE.OrthographicCamera(width / - pos, width / pos, height / pos, height / - pos, .1, 1000 );
-    camera.position.z = 5;
-    camera.position.x = -10;
-    camera.position.y = -90*Math.PI/180;
-
-    scene.add(cube, cylinder, camera);
-
-    renderer.clear();
-    renderer.setClearColor(0xffefe0);
-    renderer.render(scene, camera); 
     //render(scene, camera);
 
 }
