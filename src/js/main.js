@@ -33,13 +33,7 @@ function createObject(object, color, posx, posy, posz) {
 
 function front() {
     scene = new THREE.Scene();
-    /*
-    var trans_matrix = new THREE.Matrix4();
-    trans_matrix.set(1, 0, -1, 0,
-                     0, 1, -1, 0,
-                     0, 0,  1, 0,
-                     0, 0,  0, 1);
-    */
+ 
     var house = new THREE.CubeGeometry(2, 2.3, 2);
     var material = new THREE.MeshBasicMaterial( {color: 0x45ffee} );
     var cube = new THREE.Mesh(house, material);
@@ -72,13 +66,7 @@ function front() {
 
 function side() {
     scene = new THREE.Scene();
-/*
-    var trans_matrix = new THREE.Matrix4();
-    trans_matrix.set(1, 0, -1, 0,
-                     0, 1, -1, 0,
-                     0, 0,  1, 0,
-                     0, 0,  0, 1);
-*/
+
     var house = new THREE.CubeGeometry(2, 2.5, 2);
     var material = new THREE.MeshBasicMaterial( {color: 0x45ffee} );
     var cube = new THREE.Mesh(house, material);
