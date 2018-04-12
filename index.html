@@ -1,13 +1,38 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Patrick Kyoyetera</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CG Project</title>
+    <link type="text/css" rel="stylesheet" href="src/css/main.css" />
+
 </head>
 
-<body onload="main();">
+<body>
 
-    <canvas id="canvas" width="800" height="500"></canvas> <br />
-    <i>Drawing is above this text</i>
+    <script src="src/js/three.js"></script>
+    <script src="src/js/OrbitControls.js"></script>
+
+    <div id="options">
+        <div class="buttons">
+            <p>Front perspective</p>
+            <input id="front" type="button" value="Front" onclick="front(); return false">
+        </div>
+
+        <div class="buttons">
+            <p>Side perspective</p>
+            <input id="side" type="button" value="Side" onclick="side(); return false"><br />
+        </div>
+
+    </div>
+
     <script src="src/js/main.js"></script>
+<!--    
+    <script src="src/js/draw.js"></script>
+-->    
+
 </body>
 </html>

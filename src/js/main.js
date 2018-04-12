@@ -1,103 +1,141 @@
 
+var height = window.innerHeight / 2,
+    width = window.innerWidth / 2;
 
+var renderer = new THREE.WebGLRenderer( { antialias: true} );
+renderer.setSize(width, height);
+renderer.autoClear = true;
+document.body.appendChild(renderer.domElement);
 
-// vertex shader 
-var vertexShaderText = ['precision mediump float;', 
-                        '',
-                        'attribute vec2 vertPosition;',
-                        '',
-                        'void main() {',
-                        '   gl_Position = vec4(vertPosition, 0.0, 1.0);',
-                        '}'].join('\n');
+// perspective and orthographic cameras
+var pCamera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+var oCamera = new THREE.OrthographicCamera(width/-2, width/2, height/2, height/-2, 0.1, 1000);
 
-// fragment shader 
-var fragmentShaderText = ['precision mediump float;',
-                          '',
-                          'void main() {',
-                          '     gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0)',
-                          '}' ].join('\n');
+var scene;// = new THREE.Scene();
 
+window.addEventListener('resize', function() {
+    var width = window.innerWidth / 2,
+        height = window.innerHeight / 2;
+    renderer.setSize(width, height);
+    camera.aspect = width/height;
+    camera.updateProjectionMatrix();
+});
 
+function createObject(object, color, posx, posy, posz) {
+    var geo = new THREE.EdgesGeometry( object );
+    var mat = new THREE.LineBasicMaterial( { color: color } );
+    var wireframe = new THREE.LineSegments( geo, mat );
+    wireframe.position.y=posy;
+    wireframe.position.x=posx;
+    wireframe.position.z=posz;
+    scene.add( wireframe );    
+}
 
-// get as much into the draw call tosave resurces
-var main = function() {
-    // console.log("It's working!");
-    var canvas = document.getElementById("canvas");
-    if(!canvas) {
-        alert("Failed to retrieve <canvas> object!");
-        return;
-    }
-    var gl = canvas.getContext('webgl');
-    if(!gl) {
-        alert("webgl not supported! Using experimental-webgl");
-        gl = canvas.getContext("experimental-webgl");
-    }
+function front() {
+    scene = new THREE.Scene();
+    /*
+    var trans_matrix = new THREE.Matrix4();
+    trans_matrix.set(1, 0, -1, 0,
+                     0, 1, -1, 0,
+                     0, 0,  1, 0,
+                     0, 0,  0, 1);
+    */
+    var house = new THREE.CubeGeometry(2, 2.3, 2);
+    var material = new THREE.MeshBasicMaterial( {color: 0x45ffee} );
+    var cube = new THREE.Mesh(house, material);
 
-    //set color for clearing operations
-    gl.clearColor(.75, .85, .8, 1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    //scene.add(cube);
+    createObject(house, 0x000000, 0, 0, 0);
+
+    var wGeometry = new THREE.CylinderGeometry(1.25, 1.5, 1.5, 4);
+    material = new THREE.MeshBasicMaterial( {color: 0x5a0a4e} );
+    var cylinder = new THREE.Mesh(wGeometry, material);
+    cylinder.position.y = 2;
+    //scene.add(cylinder);
+
+    createObject(house, 0x000000, 0, 0, 0, scene);
     
-    // create shaders
-    var vertexShader = gl.createShader(gl.VERTEX_SHADER);
-    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    var pos = 142,
+        camera = new THREE.OrthographicCamera(width / - pos, width / pos, height / pos, height / - pos, .1, 1000 );
 
-    // set the shader source 
-    gl.shaderSource(vertexShader, vertexShaderText);
-    gl.shaderSource(fragmentShader, fragmentShaderText);
+    camera.position.z = 5;
 
-    // compile shaders
-    gl.compileShader(vertexShader);
-    if(!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
-        console.error('ERROR: Compiling vertex shader!', gl.getShaderInfoLog(vertexShader));
-        return;
-    }
+    //scene.add(camera);
+    scene.add(cube, cylinder, camera);
 
-    var program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
+    renderer.clear();
+    renderer.setClearColor(0xffefe0);
+    renderer.render(scene, camera);
+    //render(scene, camera);
+
+}
+
+function side() {
+    scene = new THREE.Scene();
+/*
+    var trans_matrix = new THREE.Matrix4();
+    trans_matrix.set(1, 0, -1, 0,
+                     0, 1, -1, 0,
+                     0, 0,  1, 0,
+                     0, 0,  0, 1);
+*/
+    var house = new THREE.CubeGeometry(2, 2.5, 2);
+    var material = new THREE.MeshBasicMaterial( {color: 0x45ffee} );
+    var cube = new THREE.Mesh(house, material);
+    //scene.add(cube);
+    createObject(house, 0x000000, 0, 0, 0);
+
+    var wGeometry = new THREE.CylinderGeometry(1.25, 1.5, 1.5, 4);
+    material = new THREE.MeshBasicMaterial( {color: 0x5a0a4e} );
+    var cylinder = new THREE.Mesh(wGeometry, material);
+    cylinder.position.y = 2;
+    //scene.add(cylinder);
+
+    createObject(wGeometry, 0x000000, 0, 0, 0);
     
-    //link the program together 
-    gl.linkProgram(program);
-    if(!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.error('Error linking program!', gl.getProgramInfoLog(program));
-        return;
-    }
+    var pos = 142,
+        camera = new THREE.OrthographicCamera(width / - pos, width / pos, height / pos, height / - pos, .1, 1000 );
+    camera.position.z = 5;
+    camera.position.x = -10;
+    camera.position.y = -90*Math.PI/180;
 
-    gl.validateProgram(program);
-    if(!gl.setProgramparameter(program, gl.VALIDATE_STATUS)) {
-        console.error('Error validating program!', gl.getProgramInfoLog(program));
-        return;
-    }
+    scene.add(cube, cylinder, camera);
 
-    // create buffer 
-    var triangleVertices = [0.0, 0.5, 
-                            -0.5, -0.5, 
-                            0.5, -0.5];
-    
-    // send infor to graphics card
-    var triangleVertexBufferObject = gl.createBuffer();
-    gl.bindbuffer(gl.ARRAY_BUFFER, triangleVertexBufferObject);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.STATIC_DRAW);
+    renderer.clear();
+    renderer.setClearColor(0xffefe0);
+    renderer.render(scene, camera); 
+    //render(scene, camera);
 
-    var positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
-    //specify the lay out of the attribute
-    gl.vertexAttribPointer(
-        positionAttribLocation, //location
-        2,                      // # of elements per attribute
-        gl.FLOAT,               // Type of elements
-        gl.FALSE,
-        2*Float32Array.BYTES_PER_ELEMENT, // size of individual vertex
-        0                       // offset from beginning
-    );
-    gl.enableVertexAttribArray(positionAttribLocation);
+}
 
-    // Main render loop
-    gl.useProgram(program);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+function top_() {
+    var house = new THREE.CubeGeometry(2, 2.5, 2);
+    var material = new THREE.MeshBasicMaterial( {color: 0x45ffee} );
+    var cube = new THREE.Mesh(house, material);
+
+    createObject(house, 0x000000, 0, 0, 0);
 
 
+}
+
+/*
+var update = function() {
+    renderer.clear();
+}
+
+var render = function(scene, camera) {
+    renderer.render(scene, camera);
+}
+
+var gameLoop = function() {
+    requestAnimationFrame(gameLoop);
+
+    // update scene
+    update();
+
+    //
+    render();
 };
 
-
-
-// fragment shader
+//gameLoop();
+*/
