@@ -1,0 +1,6 @@
+Author: Patrick Kyoyetera
+
+This project has a single index.html file where all the shapes and transfoprmations will be displayed.
+On opening, there will be a few icons to guide you on what to push and what it corresponds to. 
+
+Only front perspective is working today, side perspective is complete in theory but not displaying. 
