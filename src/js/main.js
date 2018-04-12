@@ -48,8 +48,8 @@ function side() {
 
     createObject(wGeometry, 0x000000, 0, 0, 0);
     
-    var pos = 142,
-        camera = new THREE.OrthographicCamera(width / - pos, width / pos, height / pos, height / - pos, .1, 1000 );
+    var offset = 142,
+        camera = new THREE.OrthographicCamera(width / - offset, width / offset, height / offset, height / - offset, .1, 1000 );
     camera.position.z = 5;
     camera.position.x = -10;
     camera.position.y = -90*Math.PI/180;
@@ -81,8 +81,8 @@ function front() {
 
     createObject(house, 0x000000, 0, 0, 0, scene);
     
-    var pos = 142,
-        camera = new THREE.OrthographicCamera(width / - pos, width / pos, height / pos, height / - pos, .1, 1000 );
+    var offset = 142,
+        camera = new THREE.OrthographicCamera(width / - offset, width / offset, height / offset, height / - offset, .1, 1000 );
 
     camera.position.z = 5;
 
