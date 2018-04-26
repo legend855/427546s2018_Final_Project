@@ -11,28 +11,40 @@
 
 </head>
 
-<body>
+<body onload="init(); return false">
 
-    <script src="src/js/three.js"></script>
-    <script src="src/js/OrbitControls.js"></script>
+    <script type="text/javascript" src="src/js/three.js"></script>
+    <script type="text/javascript" src="src/js/OrbitControls.js"></script>
+    <script type="text/javascript" src="src/js/datgui.js"></script>
 
+
+
+<!--
     <div id="options">
         <div class="buttons">
-            <p>Front perspective</p>
-            <input id="front" type="button" value="Front" onclick="front(); return false">
+            <h5>Front Perspective</h5> 
+            <input id="front" class="inputs" type="button" value="Front" onclick="front(); return false">
         </div>
 
         <div class="buttons">
-            <p>Side perspective</p>
-            <input id="side" type="button" value="Side" onclick="side(); return false"><br />
+            <h5>Side Perspective</h5>
+            <input id="side" class="inputs" type="button" value="Side" onclick="side(); return false"><br />
         </div>
 
-    </div>
+        <div class="buttons">
+            <h5>Top Perspective</h5>
+            <input id="top" class="inputs" type="button" value="Top" onclick="top_(); return false"><br />
+        </div>
+
+    </div><br />
 
     <script src="src/js/main.js"></script>
-<!--    
+    
     <script src="src/js/draw.js"></script>
--->    
+-->
+    <div id="canvas">  <h3>Drawing Here</h3>     </div>
+    <script src="src/js/final.js"></script>
+
 
 </body>
 </html>
